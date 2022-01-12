@@ -1,0 +1,115 @@
+openapi: 3.0.0
+info:
+    version: 1.0.0
+    title: Sample API
+    description: A sample API to illustrate OpenAPI concepts
+servers:
+    - url: "http://localhost:8080/"
+paths:
+    /Posts:
+        post:
+            tags:
+                - Posts
+            summary: Creates a new Posts
+            description: Adds a Posts
+            operationId: AddPost
+            requestBody:
+                description: Title, Description, Post required
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/Posts"
+                required: true
+
+            responses:
+                "200":
+                    description: Created, returns full body of Post
+                    content: 
+                        application/json:
+                            schema:
+                             $ref: "#/components/schemas/Posts"
+                "400":
+                    description: Invalid Input + error of missing parameter
+        get:
+            tags:
+                - Posts
+            summary: Returns All Posts 
+            responses:
+                "200":
+                    description: Operation Successful, returns all Posts orderd by craetion date
+                    content: 
+                        application/json:
+                            schema:
+                             $ref: "#/components/schemas/Posts"
+                "500":
+                    description: Internal error
+
+
+    /Posts/{PostsId}:
+        get:
+            tags:
+                - Posts
+            summary: Return the Post with ID ..
+            parameters:
+                - name: PostId
+                  in: path
+                  required: true
+                  schema:
+                    type: number
+            responses:
+                "200":
+                    description: Operation Successful, returns Post of id
+                    content: 
+                        application/json:
+                            schema:
+                             $ref: "#/components/schemas/Posts"
+                "400":
+                    description: Invalid input, id must be a number / cannot find id in database
+        delete:
+            tags:
+                - Posts
+            summary: Deletes A Post by id
+            description: ""
+            operationId: DeletePost
+            parameters:
+                - name: PostId
+                  in: path
+                  description: the id that needs to be deleted
+                  required: true
+                  schema:
+                      type: number
+
+            responses:
+                "200":
+                    description: Delete succesful
+                "400":
+                    description: Invalid Input / Cannot find id in database
+                "500":
+                    description: Multiple rows affected
+
+
+
+
+components:
+    schemas:
+        Posts:
+            required:
+                - Title
+                - Post
+                - Description
+            type: object
+            properties:
+                PostId:
+                    type: string
+                UserId:
+                    type: string
+                MediaId:
+                    type: number
+                MediaCollectionId:
+                    type: string
+                Title_en:
+                    type: number
+                Description_en:
+                    type: string
+                Post_en:
+                    type: string
